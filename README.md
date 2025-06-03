@@ -16,6 +16,16 @@ python main.py --targets 192.168.1.0/24 --profile pci-core --ai-analysis --repor
 
 ## Setup
 ```bash
+# Install venv module if needed
+sudo apt install python3-venv
+
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate it
+source venv/bin/activate
+
+# Install dependencies safely
 pip install -r requirements.txt
 export OPENAI_API_KEY=your_key_here
 ```
