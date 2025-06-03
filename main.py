@@ -1,4 +1,4 @@
-# pci-seg-ai/main.py
+# pci-seg/main.py
 import argparse
 from core.scan_engine import perform_scan
 from core.ai_analysis import analyze_segmentation_results
