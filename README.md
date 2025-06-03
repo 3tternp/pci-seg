@@ -1,7 +1,7 @@
 
-# pci-seg-ai
+# pci-seg
 
-**PCI DSS 4.0.1 Network Segmentation Testing Tool with AI Analysis**
+**PCI DSS 4.0.1 Network Segmentation Testing Tool**
 
 ## Features
 - ICMP + TCP scan of given targets
@@ -22,6 +22,6 @@ export OPENAI_API_KEY=your_key_here
 
 ## Docker
 ```bash
-docker build -t pci-seg-ai .
-docker run -v $(pwd)/reports:/app/reports pci-seg-ai --targets 192.168.1.0/24
+docker build -t pci-seg .
+docker run -v $(pwd)/reports:/app/reports pci-seg --targets 192.168.1.0/24
 ```
