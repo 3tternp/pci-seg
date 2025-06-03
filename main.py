@@ -1,4 +1,4 @@
-# pci-seg-ai/main.py
+# pci-seg/main.py
 import argparse
 import sys
 import os
