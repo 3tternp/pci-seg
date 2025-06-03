@@ -18,6 +18,6 @@ python main.py --targets 192.168.1.0/24 --ai-analysis --report html
 
 ### Docker
 ```bash
-docker build -t pci-seg-ai .
-docker run --rm -e OPENAI_API_KEY=your-api-key pci-seg-ai --targets 192.168.1.0/24 --ai-analysis --report html
+docker build -t pci-seg .
+docker run --rm -e OPENAI_API_KEY=your-api-key pci-seg --targets 192.168.1.0/24 --ai-analysis --report html
 ```
