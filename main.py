@@ -1,9 +1,12 @@
-
+# pci-seg-ai/main.py
 import argparse
 from core.scan_engine import perform_scan
 from core.ai_analysis import analyze_segmentation_results
 from core.report_generator import generate_report
+import json
+import os
 from datetime import datetime
+
 
 def main():
     parser = argparse.ArgumentParser(description="PCI DSS Segmentation Testing Tool with AI")
@@ -12,6 +15,11 @@ def main():
     parser.add_argument('--ai-analysis', action='store_true', help='Enable AI analysis')
     parser.add_argument('--report', choices=['json', 'html'], default='json', help='Report format')
     args = parser.parse_args()
+
+    print("[*] Checking Nmap installation...")
+    if os.system("which nmap > /dev/null 2>&1") != 0:
+        print("[!] Error: Nmap is not installed. Please install it using:\n    sudo apt update && sudo apt install nmap")
+        exit(1)
 
     print("[*] Starting scan...")
     scan_data = perform_scan(args.targets, args.profile)
@@ -27,6 +35,7 @@ def main():
     print("[*] Generating report...")
     generate_report(scan_data, ai_result, report_path, args.report)
     print(f"[+] Report saved: {report_path}")
+
 
 if __name__ == '__main__':
     main()
