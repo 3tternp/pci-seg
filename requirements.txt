@@ -1,0 +1,6 @@
+
+scapy
+nmap
+openai
+rich
+jinja2
