@@ -1,37 +1,23 @@
+# PCI SEG AI Tool
 
-# pci-seg
-
-**PCI DSS 4.0.1 Network Segmentation Testing Tool**
+A PCI DSS segmentation testing tool with AI-enhanced analysis.
 
 ## Features
-- ICMP + TCP scan of given targets
-- Supports custom PCI port profiles
-- OpenAI GPT-4 powered AI audit
-- Generates JSON or HTML reports
+- Nmap-based segmentation testing
+- AI-based result analysis using OpenAI
+- JSON/HTML report generation
+- Dockerized and ready for secure deployment
 
 ## Usage
+
+### Locally
 ```bash
-python main.py --targets 192.168.1.0/24 --profile pci-core --ai-analysis --report html
+export OPENAI_API_KEY='your-api-key'
+python main.py --targets 192.168.1.0/24 --ai-analysis --report html
 ```
 
-## Setup
+### Docker
 ```bash
-# Install venv module if needed
-sudo apt install python3-venv
-
-# Create a virtual environment
-python3 -m venv venv
-
-# Activate it
-source venv/bin/activate
-
-# Install dependencies safely
-pip install -r requirements.txt
-export OPENAI_API_KEY=your_key_here
-```
-
-## Docker
-```bash
-docker build -t pci-seg .
-docker run -v $(pwd)/reports:/app/reports pci-seg --targets 192.168.1.0/24
+docker build -t pci-seg-ai .
+docker run --rm -e OPENAI_API_KEY=your-api-key pci-seg-ai --targets 192.168.1.0/24 --ai-analysis --report html
 ```
