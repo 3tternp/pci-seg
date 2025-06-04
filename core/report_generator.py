@@ -2,7 +2,7 @@
 from jinja2 import Template
 import json
 
-def generate_report_html_template(scan_data, ai_result, output_path, fmt):
+def report_generator(scan_data, ai_result, output_path, fmt):
     if fmt != 'html':
         with open(output_path, 'w') as f:
             json.dump({"scan_data": scan_data, "ai_analysis": ai_result}, f, indent=2)
