@@ -3,7 +3,7 @@ from jinja2 import Template
 import json
 import pdfkit
 
-def generate_html_report(scan_data):
+def report_generator(scan_data):
     template_str = """
     <!DOCTYPE html>
     <html lang="en">
