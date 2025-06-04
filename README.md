@@ -1,4 +1,4 @@
-# PCI SEG AI Tool
+# PCI SEG 
 
 A PCI DSS segmentation testing tool with AI-enhanced analysis.
 
