@@ -8,7 +8,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="PCI Recon Scanner")
     parser.add_argument("--target", required=True, help="Target IP or hostname")
     parser.add_argument("--profile", default="pci-core", help="Scan profile: pci-core or custom")
-    parser.add_argument("--report", choices=["html", "json"], default="html", help="Report format")
+    parser.add_argument('--report', choices=['html', 'json', 'pdf'], default='html', help='Report format')
 
     args = parser.parse_args()
 
