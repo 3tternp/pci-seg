@@ -10,34 +10,40 @@
 
     🐳 Docker support for easy deployment
 
+```
 🛠️ Installation
 ⬇️ Clone the repo
 
 git clone https://github.com/your-org/pci-seg.git
-cd pci-seg
 
+cd pci-seg
+```
+```
 📦 Install Python dependencies
 
 pip install -r requirements.txt
+```
 
 🐳 Or use Docker
-
+```
 docker build -t pci-seg .
 docker run --rm -v $(pwd)/reports:/app/reports pci-seg --target 192.168.1.1 --profile pci-core
-
+```
 ⚙️ Usage
-
+```
 python3 main.py --target <TARGET_IP> --profile <pci-core|custom> --format <html|json>
 
 Example
 
 python3 main.py --target 10.0.0.1 --profile pci-core --format html
+```
 
 Arguments
 Argument	Description
 --target	IP address or hostname to scan
 --profile	Scan profile: pci-core (default) or custom
 --format	Output format: html (default) or json
+```
 📄 Output
 
 Reports are saved under the reports/ directory.
@@ -45,7 +51,7 @@ Reports are saved under the reports/ directory.
     report_<timestamp>.html – Full vulnerability report in styled table format
 
     report_<timestamp>.json – Raw scan and result data
-
+```
 🔧 Scan Evasion Techniques
 
 The tool uses several Nmap evasion options to simulate real-world attacks and test firewall/IPS filtering:
