@@ -81,11 +81,12 @@ Install manually:
 pip install jinja2
 
 Or use the included requirements.txt.
+
 📌 To Do
 
-Add unit tests
+    Add unit tests
 
-CI/CD integration for automated scans
+    CI/CD integration for automated scans
 
     Add CVE-based enrichment
 
