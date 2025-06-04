@@ -1,12 +1,13 @@
+# pci-seg-ai/main.py
 import argparse
 import sys
 import os
 import json
 from datetime import datetime
 
+# Ensure script fails gracefully if dependencies are missing
 try:
-    from core.scan_engine import perform_scan
-    from core.ai_analysis import analyze_segmentation_results
+    from core.scan_engine import perform_scan_with_evasion
     from core.report_generator import report_generator
 except ModuleNotFoundError as e:
     missing_module = str(e).split("No module named ")[-1].strip("'")
@@ -15,10 +16,9 @@ except ModuleNotFoundError as e:
     sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description="PCI DSS Segmentation Testing Tool with AI")
+    parser = argparse.ArgumentParser(description="PCI DSS Segmentation Testing Tool with Evasion Techniques")
     parser.add_argument('--targets', required=True, help='Target IP/CIDR (e.g., 192.168.1.0/24)')
     parser.add_argument('--profile', default='pci-core', help='Port profile to use (default: pci-core)')
-    parser.add_argument('--ai-analysis', action='store_true', help='Enable AI analysis')
     parser.add_argument('--report', choices=['json', 'html'], default='json', help='Report format')
     args = parser.parse_args()
 
@@ -27,25 +27,12 @@ def main():
         print("[!] Error: Nmap is not installed. Please install it using:\n    sudo apt update && sudo apt install nmap")
         sys.exit(1)
 
-    print("[*] Starting scan...")
+    print("[*] Starting scan with IDS/IPS evasion techniques...")
     try:
-        scan_data = perform_scan(args.targets, args.profile)
+        scan_data = perform_scan_with_evasion(args.targets, args.profile)
     except Exception as e:
         print(f"[!] Scan failed: {e}")
         sys.exit(1)
-
-    ai_result = ""
-    if args.ai_analysis:
-        print("[*] Running AI analysis...")
-        openai_key = os.getenv("OPENAI_API_KEY")
-        if not openai_key:
-            print("[!] OPENAI_API_KEY environment variable is not set.")
-            sys.exit(1)
-        try:
-            ai_result = analyze_segmentation_results(scan_data, openai_key)
-        except Exception as e:
-            print(f"[!] AI analysis failed: {e}")
-            ai_result = "[AI analysis failed]"
 
     timestamp = datetime.now().strftime('%Y-%m-%d_%H%M')
     os.makedirs("reports", exist_ok=True)
@@ -53,7 +40,7 @@ def main():
 
     print("[*] Generating report...")
     try:
-        generate_report(scan_data, ai_result, report_path, args.report)
+        generate_report_html_template(scan_data, "[AI analysis disabled]", report_path, args.report)
         print(f"[+] Report saved: {report_path}")
     except Exception as e:
         print(f"[!] Report generation failed: {e}")
