@@ -4,8 +4,7 @@ A PCI DSS segmentation testing tool with AI-enhanced analysis.
 
 ## Features
 - Nmap-based segmentation testing
-- AI-based result analysis using OpenAI
-- JSON/HTML report generation
+- HTML report generation
 - Dockerized and ready for secure deployment
 
 ## Usage
