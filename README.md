@@ -12,7 +12,9 @@ A PCI DSS segmentation testing tool with AI-enhanced analysis.
 
 ### Locally
 ```bash
-export OPENAI_API_KEY='your-api-key'
+sudo bash setup_env.sh
+**inside venv environment execute**
+pip3 install -r requirements.txt
 python main.py --targets 192.168.1.0/24 --ai-analysis --report html
 ```
 
