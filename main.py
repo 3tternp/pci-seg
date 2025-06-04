@@ -1,8 +1,6 @@
-# pci-seg-ai/main.py
 import argparse
 import sys
 import os
-import json
 from datetime import datetime
 
 # Ensure script fails gracefully if dependencies are missing
@@ -16,7 +14,7 @@ except ModuleNotFoundError as e:
     sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description="PCI DSS Segmentation Testing Tool with Evasion Techniques")
+    parser = argparse.ArgumentParser(description="PCI DSS Segmentation Testing Tool")
     parser.add_argument('--targets', required=True, help='Target IP/CIDR (e.g., 192.168.1.0/24)')
     parser.add_argument('--profile', default='pci-core', help='Port profile to use (default: pci-core)')
     parser.add_argument('--report', choices=['json', 'html'], default='json', help='Report format')
@@ -27,20 +25,22 @@ def main():
         print("[!] Error: Nmap is not installed. Please install it using:\n    sudo apt update && sudo apt install nmap")
         sys.exit(1)
 
-    print("[*] Starting scan with IDS/IPS evasion techniques...")
+    print("[*] Starting scan...")
     try:
         scan_data = perform_scan_with_evasion(args.targets, args.profile)
     except Exception as e:
         print(f"[!] Scan failed: {e}")
         sys.exit(1)
 
+    ai_result = ""  # No AI analysis in this version
+
     timestamp = datetime.now().strftime('%Y-%m-%d_%H%M')
-    os.makedirs("reports", exist_ok=True)
-    report_path = f"reports/report_{timestamp}.{args.report}"
+    os.makedirs("output", exist_ok=True)
+    report_path = f"output/report_{timestamp}.{args.report}"
 
     print("[*] Generating report...")
     try:
-        generate_report_html_template(scan_data, "[AI analysis disabled]", report_path, args.report)
+        report_generator(scan_data, ai_result, report_path, args.report)
         print(f"[+] Report saved: {report_path}")
     except Exception as e:
         print(f"[!] Report generation failed: {e}")
