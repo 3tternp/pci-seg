@@ -16,10 +16,9 @@ sudo bash setup_env.sh
 
 source venv/bin/activate
 
-inside venv environment execute
-
 pip3 install -r requirements.txt
-python3 main.py --targets 192.168.1.0/24 --ai-analysis --report html
+
+python3 main.py --targets <TargetIP> --ai-analysis --report html
 ```
 
 ### Docker
