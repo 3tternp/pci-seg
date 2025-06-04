@@ -1,9 +1,8 @@
 # core/scan_engine.py
 import subprocess
-import json
+import xml.etree.ElementTree as ET
 
 def perform_scan_with_evasion(targets, profile):
-    # Example evasion flags: -f (fragment), --data-length, --ttl, --badsum, -D for decoy
     evasion_flags = [
         "-f",
         "--data-length", "20",
@@ -37,11 +36,11 @@ def perform_scan_with_evasion(targets, profile):
     if result.returncode != 0:
         raise RuntimeError(f"Nmap scan failed: {result.stderr.strip()}")
 
-    return parse_nmap_xml(result.stdout)
+    parsed = parse_nmap_xml(result.stdout)
+    return parsed, result.stdout  # returning both for reporting or debug
 
 def parse_nmap_xml(xml_data):
     try:
-        import xml.etree.ElementTree as ET
         root = ET.fromstring(xml_data)
         scan_results = []
         for host in root.findall('host'):
@@ -52,7 +51,8 @@ def parse_nmap_xml(xml_data):
             for port in host.findall('.//port'):
                 port_id = port.attrib.get('portid')
                 state = port.find('state').attrib.get('state')
-                service = port.find('service').attrib.get('name', 'unknown')
+                service_elem = port.find('service')
+                service = service_elem.attrib.get('name') if service_elem is not None else 'unknown'
                 if state == 'open':
                     ports.append({"port": port_id, "service": service})
 
