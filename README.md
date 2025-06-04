@@ -92,7 +92,7 @@ MIT License
 
 ## Author
 
-Developed by Vairav Technology Security Pvt. Ltd.
+Developed by Astra
 
 ---
 
