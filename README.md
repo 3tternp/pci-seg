@@ -17,7 +17,7 @@ source venv/bin/activate
 
 pip3 install -r requirements.txt
 
-python3 main.py --targets <TargetIP> --ai-analysis --report html
+python3 main.py --targets <TargetIP> --scan-engine --report html
 ```
 
 ### Docker
