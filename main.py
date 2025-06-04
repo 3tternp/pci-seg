@@ -7,7 +7,7 @@ from datetime import datetime
 try:
     from core.scan_engine import perform_scan
     from core.ai_analysis import analyze_segmentation_results
-    from core.report_generator import generate_report
+     from core.report_generator import report_generator
 except ModuleNotFoundError as e:
     missing_module = str(e).split("No module named ")[-1].strip("'")
     print(f"[!] Missing required module: {missing_module}")
