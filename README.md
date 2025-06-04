@@ -14,6 +14,8 @@ A PCI DSS segmentation testing tool with AI-enhanced analysis.
 ```bash
 sudo bash setup_env.sh
 
+source venv/bin/activate
+
 inside venv environment execute
 
 pip3 install -r requirements.txt
