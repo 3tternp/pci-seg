@@ -17,7 +17,7 @@ JSON Report Option: Machine-readable output for integrations.
 DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 
 Project Structure
-````
+```
 .
 ├── core
 │   ├── scan_engine.py          # Scanning engine with Nmap and evasion flags
