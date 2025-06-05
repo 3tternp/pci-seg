@@ -1,4 +1,3 @@
-# main.py
 import argparse
 import os
 from core.scan_engine import perform_scan_with_evasion
@@ -8,7 +7,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="PCI Recon Scanner")
     parser.add_argument("--target", required=True, help="Target IP or hostname")
     parser.add_argument("--profile", default="pci-core", help="Scan profile: pci-core or custom")
-    parser.add_argument('--report', choices=['html', 'json', 'pdf'], default='html', help='Report format')
+    parser.add_argument('--report', choices=['html', 'json', 'pdf', 'docx'], default='html', help='Report format')
 
     args = parser.parse_args()
 
@@ -33,3 +32,4 @@ if __name__ == "__main__":
         print(f"[+] Report saved: {output_path}")
     except Exception as e:
         print(f"[!] Report generation failed: {e}")
+        exit(1)
