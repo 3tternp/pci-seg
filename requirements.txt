@@ -1,4 +1,5 @@
 python-nmap
+python-docx
 jinja2
 pdfkit
 WeasyPrint
