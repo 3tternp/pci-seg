@@ -22,11 +22,10 @@ DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 ├── core
 │   ├── scan_engine.py          # Scanning engine with Nmap and evasion flags
 │   └── report_generator.py     # HTML, DOCX, and JSON report generator
-├── templates                   # Optional templates folder
-├── output                      # Output folder for scan results and reports
-├── main.py                     # Main entry point for running scan + report
-└── README.md                   # Project documentation (this file)
-
+├── templates/
+│   └── report_template.docx    # (optional) Base design
+└── output/
+    └── final_report.docx       # Filled report output
 ```
 **Installation**
 ```
