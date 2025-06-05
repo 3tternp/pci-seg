@@ -1,70 +1,81 @@
 from docx import Document
-from docx.shared import Inches
 import json
+from jinja2 import Template
 import os
 
-def report_generator(scan_result, ai_result, output_path, report_format):
-    if report_format == "docx":
-        generate_docx_report(scan_result, ai_result, output_path)
-    elif report_format == "html":
-        generate_html_report(scan_result, ai_result, output_path)
-    elif report_format == "json":
-        generate_json_report(scan_result, ai_result, output_path)
-    elif report_format == "pdf":
-        generate_pdf_report(scan_result, ai_result, output_path)
+def report_generator(scan_data, output_path, fmt='html'):
+    if fmt == 'json':
+        with open(output_path, 'w') as f:
+            json.dump(scan_data, f, indent=2)
+        return
+
+    elif fmt == 'html':
+        generate_html_report(scan_data, output_path)
+        return
+
+    elif fmt == 'docx':
+        generate_docx_report(scan_data, output_path)
+        return
+
     else:
-        raise ValueError(f"Unsupported report format: {report_format}")
+        raise ValueError("Unsupported report format. Use html, json, or docx.")
 
-def generate_docx_report(scan_result, ai_result, output_path):
+
+def generate_html_report(scan_data, output_path):
+    template_str = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Vulnerability Report</title>
+        <style>
+            body { font-family: Arial; padding: 30px; }
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid #ccc; padding: 10px; }
+            th { background-color: #eee; }
+        </style>
+    </head>
+    <body>
+        <h2>Vulnerability Report</h2>
+        <table>
+            {% for key, value in scan_data.items() %}
+            <tr>
+                <th>{{ key.replace("_", " ").title() }}</th>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+    </html>
+    """
+    template = Template(template_str)
+    rendered_html = template.render(scan_data=scan_data)
+    with open(output_path, 'w') as f:
+        f.write(rendered_html)
+
+
+def generate_docx_report(scan_data, output_path):
     doc = Document()
-    doc.add_heading("PCI Recon Scan Report", 0)
+    doc.add_heading("Vulnerability Report", 0)
 
-    # Add scan summary
-    doc.add_heading("Scan Summary", level=1)
-    doc.add_paragraph(f"Target IP: {scan_result.get('target_ip', 'Unknown')}")
-    doc.add_paragraph(f"Source IP: {scan_result.get('source_ip', 'Unknown')}")
-    doc.add_paragraph(f"Scan Profile: {scan_result.get('profile', 'pci-core')}")
+    # Add table
+    table = doc.add_table(rows=1, cols=2)
+    table.style = 'Table Grid'
 
-    # Add vulnerabilities section
-    doc.add_heading("Vulnerabilities", level=1)
-    vulnerabilities = scan_result.get('vulnerabilities', [])
+    hdr_cells = table.rows[0].cells
+    hdr_cells[0].text = 'Field'
+    hdr_cells[1].text = 'Details'
 
-    for vuln in vulnerabilities:
-        doc.add_heading(f"Issue: {vuln.get('issue_name', 'Unknown')}", level=2)
-        doc.add_paragraph(f"Targeted IP: {vuln.get('target_ip', scan_result.get('target_ip', 'Unknown'))}")
-        doc.add_paragraph(f"Source IP: {vuln.get('source_ip', scan_result.get('source_ip', 'Unknown'))}")
-        doc.add_paragraph(f"Method Used: {vuln.get('method', 'Unknown')}")
-        doc.add_paragraph(f"Port Used: {vuln.get('port', 'Unknown')}")
-        doc.add_paragraph(f"Vulnerability Details: {vuln.get('details', 'No details provided')}")
-        doc.add_paragraph(f"Attack Vector: {vuln.get('attack_vector', 'Unknown')}")
-        doc.add_paragraph(f"Attack Complexity: {vuln.get('attack_complexity', 'Unknown')}")
-        doc.add_paragraph(f"Privileges Required: {vuln.get('privileges_required', 'Unknown')}")
-        doc.add_paragraph(f"User Interaction: {vuln.get('user_interaction', 'Unknown')}")
-        doc.add_paragraph(f"Scope: {vuln.get('scope', 'Unknown')}")
-        doc.add_paragraph(f"Confidentiality: {vuln.get('confidentiality', 'Unknown')}")
-        doc.add_paragraph(f"Integrity: {vuln.get('integrity', 'Unknown')}")
-        doc.add_paragraph(f"Availability: {vuln.get('availability', 'Unknown')}")
-        doc.add_paragraph(f"Severity Rating: {vuln.get('severity_rating', 'Unknown')}")
-        doc.add_paragraph(f"Business Impact: {vuln.get('business_impact', 'No impact provided')}")
-        doc.add_paragraph(f"Remediation: {vuln.get('remediation', 'No remediation provided')}")
-        doc.add_paragraph(f"Proof of Concept: {vuln.get('proof_of_concept', 'No PoC provided')}")
-        doc.add_paragraph("-" * 50)
+    for field in [
+        'Issue Name', 'Targeted IP', 'Source IP', 'Method used', 'Port Used',
+        'Vulnerability details', 'Attack Vector', 'Attack Complexity',
+        'Privileges Required', 'User Interaction', 'Scope',
+        'Confidentiality', 'Integrity', 'Availability', 'Severity-Rating',
+        'Business impact', 'Remediation', 'Proof of Concept'
+    ]:
+        value = scan_data.get(field.lower().replace(" ", "_"), 'N/A')
+        row_cells = table.add_row().cells
+        row_cells[0].text = field
+        row_cells[1].text = str(value)
 
-    # Save the document
     doc.save(output_path)
-
-def generate_html_report(scan_result, ai_result, output_path):
-    # Placeholder for existing HTML report generation
-    with open(output_path, 'w') as f:
-        f.write("<html><body><h1>PCI Recon Scan Report</h1><p>HTML report placeholder</p></body></html>")
-
-def generate_json_report(scan_result, ai_result, output_path):
-    # Placeholder for existing JSON report generation
-    with open(output_path, 'w') as f:
-        json.dump(scan_result, f, indent=4)
-
-def generate_pdf_report(scan_result, ai_result, output_path):
-    # Placeholder for existing PDF report generation
-    with open(output_path, 'w') as f:
-        f.write("PDF report placeholder")
-
