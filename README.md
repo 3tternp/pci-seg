@@ -70,6 +70,7 @@ Author
 ```
 Developed by Astra(3tternp)
 ```
-**🛡️ Disclaimer**
+
+**Disclaimer**
 
 This tool is intended for authorized PCI DSS testing only. Do not use it against networks you do not own or have explicit permission to assess.
