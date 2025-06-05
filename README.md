@@ -1,13 +1,9 @@
 #🚀 Features
 
     🔒 Designed for PCI DSS segmentation validation
-
     🛡️ Uses aggressive evasion flags to simulate attacker behavior (e.g., TTL, decoy, packet fragmentation)
-
     🧪 Supports both standard and custom scan profiles
-
     📄 Generates detailed vulnerability reports in HTML and JSON format
-
     🐳 Docker support for easy deployment
 
 ```
