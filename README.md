@@ -35,13 +35,12 @@ Argument	Description
 --target	IP address or hostname to scan
 --profile	Scan profile: pci-core (default) or custom
 --format	Output format: html (default) or json
-```
-📄 Output
 
+📄 Output
+```
 Reports are saved under the reports/ directory.
 
     report_<timestamp>.html – Full vulnerability report in styled table format
-
     report_<timestamp>.json – Raw scan and result data
 ```
 🔧 Scan Evasion Techniques
@@ -49,37 +48,26 @@ Reports are saved under the reports/ directory.
 The tool uses several Nmap evasion options to simulate real-world attacks and test firewall/IPS filtering:
 
     -f : Fragment packets
-
     --data-length 20 : Add random data
-
     --ttl 128 : Set Time-To-Live
-
     --badsum : Send bad checksum packets
-
     -T2 : Set timing template
-
     -D RND:10 : Use 10 decoy source IPs
 
 📦 Dependencies
 
     Python 3.8+
-
     Nmap
-
     jinja2 (for HTML report rendering)
 
 Install manually:
-
 pip install jinja2
-
 Or use the included requirements.txt.
 
 📌 To Do
 
     Add unit tests
-
     CI/CD integration for automated scans
-
     Add CVE-based enrichment
 
 🛡️ Disclaimer
