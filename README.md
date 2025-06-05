@@ -41,8 +41,10 @@ jinja2
 python-docx
 ```
 **Usage**
+
 ```
 **Output**
+
 ```
 report.html: A detailed human-readable vulnerability report.
 
