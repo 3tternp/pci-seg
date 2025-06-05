@@ -40,8 +40,10 @@ jinja2
 python-docx
 ```
 **Usage**
-
 ```
+python3 main.py --target 192.168.1.20 --profile pci-core --report pdf
+```
+
 Output
 
 ```
