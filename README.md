@@ -6,20 +6,18 @@
     📄 Generates detailed vulnerability reports in HTML and JSON format
     🐳 Docker support for easy deployment
 
-```
+
 🛠️ Installation
+```
 ⬇️ Clone the repo
-
 git clone https://github.com/your-org/pci-seg.git
-
 cd pci-seg
 ```
-```
-📦 Install Python dependencies
 
+📦 Install Python dependencies
+```
 pip install -r requirements.txt
 ```
-
 🐳 Or use Docker
 ```
 docker build -t pci-seg .
