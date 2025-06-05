@@ -41,10 +41,10 @@ python-docx
 ```
 **Usage**
 ```
-python3 main.py --target 192.168.1.20 --profile pci-core --report pdf
+python3 main.py --target <Target IP> --profile pci-core --report pdf
 ```
 
-Output
+**Output**
 
 ```
 report.html: A detailed human-readable vulnerability report.
@@ -53,7 +53,7 @@ report.json: Same data in structured JSON format.
 
 report.docx: Word document in tabular vulnerability format.
 ```
-Profiles Supported
+**Profiles Supported**
 ```
 pci-core: Ports relevant for PCI-DSS audits.
 
@@ -67,11 +67,12 @@ Integration with vulnerability databases (e.g., CVE lookup)
 
 Option to customize template files
 ```
-Author
+**Author**
 ```
 Developed by Astra(3tternp)
 ```
 
 **Disclaimer**
-
+```
 This tool is intended for authorized PCI DSS testing only. Do not use it against networks you do not own or have explicit permission to assess.
+```
