@@ -26,9 +26,7 @@ docker run --rm -v $(pwd)/reports:/app/reports pci-seg --target 192.168.1.1 --pr
 ⚙️ Usage
 ```
 python3 main.py --target <TARGET_IP> --profile <pci-core|custom> --format <html|json>
-
 Example
-
 python3 main.py --target 10.0.0.1 --profile pci-core --format html
 ```
 
