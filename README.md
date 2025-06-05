@@ -43,7 +43,7 @@ python-docx
 **Usage**
 
 ```
-**Output**
+Output
 
 ```
 report.html: A detailed human-readable vulnerability report.
@@ -52,7 +52,7 @@ report.json: Same data in structured JSON format.
 
 report.docx: Word document in tabular vulnerability format.
 ```
-**Profiles Supported**
+Profiles Supported
 ```
 pci-core: Ports relevant for PCI-DSS audits.
 
