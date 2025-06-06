@@ -1,8 +1,18 @@
-# core/scan_engine.py
 import subprocess
+import platform
 import xml.etree.ElementTree as ET
 
-def perform_scan_with_evasion(targets, profile):
+def ping_host(ip):
+    """Returns True if ping is successful."""
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
+    try:
+        result = subprocess.run(["ping", param, "1", ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return result.returncode == 0
+    except Exception as e:
+        print(f"[!] Ping failed for {ip}: {e}")
+        return False
+
+def perform_scan_with_evasion(target_ip, profile):
     evasion_flags = [
         "-f",
         "--data-length", "20",
@@ -27,17 +37,17 @@ def perform_scan_with_evasion(targets, profile):
         "-n",
         "--open",
         "-oX", "-"
-    ] + evasion_flags + [targets]
+    ] + evasion_flags + [target_ip]
 
     print("[*] Executing Nmap command with evasion:", " ".join(command))
 
     result = subprocess.run(command, capture_output=True, text=True)
 
     if result.returncode != 0:
-        raise RuntimeError(f"Nmap scan failed: {result.stderr.strip()}")
+        raise RuntimeError(f"[!] Nmap scan failed: {result.stderr.strip()}")
 
     parsed = parse_nmap_xml(result.stdout)
-    return parsed, result.stdout  # returning both for reporting or debug
+    return parsed, result.stdout
 
 def parse_nmap_xml(xml_data):
     try:
@@ -56,8 +66,18 @@ def parse_nmap_xml(xml_data):
                 if state == 'open':
                     ports.append({"port": port_id, "service": service})
 
-            if ports:
-                scan_results.append({"ip": ip, "open_ports": ports})
+            icmp_status = ping_host(ip)
+            icmp_result = {
+                "icmp_status": "failed" if not icmp_status else "successful",
+                "pci_dss_compliance": "Compliant" if not icmp_status else "Non-Compliant"
+            }
+
+            scan_results.append({
+                "ip": ip,
+                "icmp_check": icmp_result,
+                "open_ports": ports
+            })
+
         return scan_results
     except Exception as e:
-        raise RuntimeError(f"Failed to parse Nmap XML output: {e}")
+        raise RuntimeError(f"[!] Failed to parse Nmap XML output: {e}")
