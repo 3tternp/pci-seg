@@ -1,5 +1,5 @@
 import subprocess
-from core.scan_engine import perform_scan_with_evasion
+from core.scan_engine import perform_scan_with_evasion, perform_normal_scan
 from core.report_generator import report_generator
 
 def is_icmp_blocked(source_ip, target_ip):
@@ -17,6 +17,7 @@ def main():
     target_ip = input("Enter target IP address to scan: ")
 
     findings = []
+    extra_tables = []
 
     # --- ICMP Check ---
     icmp_blocked = is_icmp_blocked(source_ip, target_ip)
@@ -63,7 +64,21 @@ def main():
             "proof_of_concept": f"Ping to {target_ip} from {source_ip} succeeded."
         })
 
-    # --- Nmap Firewall Evasion Scan ---
+        # --- Normal Nmap Scan if ICMP allowed ---
+        print("[*] Running normal service scan due to ICMP being open...")
+        open_services, _ = perform_normal_scan(target_ip)
+
+        if open_services:
+            table_data = [["Port", "Service"]]
+            for host in open_services:
+                for port in host["open_ports"]:
+                    table_data.append([port["port"], port["service"]])
+            extra_tables.append({
+                "title": "Discovered Services via Normal Scan",
+                "data": table_data
+            })
+
+    # --- Firewall Evasion Scan ---
     print("[*] Running firewall bypass scan...")
     scan_results, _ = perform_scan_with_evasion(target_ip, profile="pci-core")
 
@@ -86,8 +101,8 @@ def main():
                     "integrity": "Low",
                     "availability": "Low",
                     "severity_rating": "High",
-                    "business_impact": "Indicates firewall or IDS/IPS may not be properly configured.",
-                    "remediation": "Implement proper firewall rules and intrusion detection controls.",
+                    "business_impact": "Firewall or IDS/IPS may not be properly configured.",
+                    "remediation": "Harden firewall and intrusion detection systems.",
                     "proof_of_concept": f"Port {port['port']} ({port['service']}) discovered using bypass scan."
                 })
     else:
@@ -107,13 +122,14 @@ def main():
             "integrity": "None",
             "availability": "None",
             "severity_rating": "Informational",
-            "business_impact": "Firewall and IDS appear to be properly configured.",
+            "business_impact": "Firewall and IDS appear well configured.",
             "remediation": "None required.",
-            "proof_of_concept": "Nmap with evasion techniques did not reveal any open ports."
+            "proof_of_concept": "Evasion techniques failed to discover open ports."
         })
 
-    # --- Report Generation ---
-    report_generator(findings, "output/pci_report.docx", fmt="docx")
+    # --- Final Report ---
+    report_generator(findings, "output/pci_report.docx", fmt="docx", tables=extra_tables)
 
 if __name__ == "__main__":
     main()
+
