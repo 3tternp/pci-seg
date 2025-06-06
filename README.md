@@ -29,7 +29,7 @@ python-docx
 sudo su
 source venv/bin/activate
  pip3 install -r requirements.txt
-python3 main.py  --profile pci-core --report docx 
+python3 main.py  --profile pci-core
 ```
 
 **Output**
