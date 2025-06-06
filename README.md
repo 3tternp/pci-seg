@@ -16,17 +16,6 @@ JSON Report Option: Machine-readable output for integrations.
 
 DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 ```
-**Project Structure**
-```
-.
-├── core
-│   ├── scan_engine.py          # Scanning engine with Nmap and evasion flags
-│   └── report_generator.py     # HTML, DOCX, and JSON report generator
-├── templates/
-│   └── report_template.docx    # (optional) Base design
-└── output/
-    └── report.docx       # Filled report output
-```
 **Installation**
 ```
 pip install -r requirements.txt
@@ -41,16 +30,19 @@ python-docx
 ```
 **Usage**
 ```
-python3 main.py --target <Target IP> --profile pci-core --report pdf
+sudo su
+source venv/bin/activate
+ pip3 install -r requirements.txt
+python3 main.py  --profile pci-core --report docx 
 ```
 
 **Output**
+![Screenshot From 2025-06-06 08-06-15](https://github.com/user-attachments/assets/32774795-d3e6-4960-8764-799db45fad63)
+and the generated report looks like 
+![image](https://github.com/user-attachments/assets/31e51e9e-3e1e-4ed8-a0b8-4011692c4eaa)
+
 
 ```
-report.html: A detailed human-readable vulnerability report.
-
-report.json: Same data in structured JSON format.
-
 report.docx: Word document in tabular vulnerability format.
 ```
 **Profiles Supported**
@@ -58,14 +50,6 @@ report.docx: Word document in tabular vulnerability format.
 pci-core: Ports relevant for PCI-DSS audits.
 
 custom: All ports from 1-1024 (default fallback).
-```
-**Future Enhancements**
-```
-CLI wrapper for easy terminal use
-
-Integration with vulnerability databases (e.g., CVE lookup)
-
-Option to customize template files
 ```
 **Author**
 ```
