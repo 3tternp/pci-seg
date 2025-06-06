@@ -1,6 +1,9 @@
 import subprocess
 import platform
 import xml.etree.ElementTree as ET
+# At the top or bottom of scan_engine.py
+# Ensure both functions are available for import
+__all__ = ["perform_scan_with_evasion", "perform_normal_scan"]
 
 def ping_host(ip):
     """Returns True if ping is successful."""
@@ -12,6 +15,30 @@ def ping_host(ip):
         print(f"[!] Ping failed for {ip}: {e}")
         return False
 
+def perform_normal_scan(target):
+    """
+    Performs a standard TCP SYN scan without evasion flags.
+    Used when ICMP is allowed and we want to see running services.
+    """
+    command = [
+        "nmap",
+        "-Pn",
+        "-sS",
+        "-n",
+        "--open",
+        "-oX", "-",
+        target
+    ]
+
+    print("[*] Executing normal Nmap scan:", " ".join(command))
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode != 0:
+        raise RuntimeError(f"Nmap scan failed: {result.stderr.strip()}")
+
+    parsed = parse_nmap_xml(result.stdout)
+    return parsed, result.stdout
+    
 def perform_scan_with_evasion(target_ip, profile):
     evasion_flags = [
         "-f",
