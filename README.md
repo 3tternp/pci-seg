@@ -25,7 +25,7 @@ DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 ├── templates/
 │   └── report_template.docx    # (optional) Base design
 └── output/
-    └── final_report.docx       # Filled report output
+    └── report.docx       # Filled report output
 ```
 **Installation**
 ```
