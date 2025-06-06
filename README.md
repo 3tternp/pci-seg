@@ -1,15 +1,12 @@
-**PCI-DSS Recon and Vulnerability Report Tool**
+**pci-seg**
 ```
-This tool is designed to perform PCI-DSS-compliant reconnaissance with advanced evasion techniques using Nmap, and generate detailed vulnerability reports in HTML, JSON, and DOCX formats.
-
+This tool is designed to perform PCI-DSS-compliant reconnaissance with advanced evasion techniques using Nmap, and generate detailed vulnerability reports in DOCX formats.
 It helps auditors and security professionals conduct stealthy scans and document the findings in a structured format, suitable for audit records or compliance reports.
 ```
 **Features**
 ```
 Port Scanning with Evasion: Leverages Nmap with evasion flags such as fragmenting packets, modifying TTL, using decoys, etc.
-
 Profile-based Scanning: Currently supports pci-core and custom scanning profiles.
-
 DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 ```
 **Installation**
