@@ -1,5 +1,4 @@
-Field	Details
-Issue Name	
+﻿Issue Name: 
 Targeted IP	
 Source IP	
 Method used	TCP SYN Scan
@@ -17,3 +16,4 @@ Severity-Rating
 Business impact	
 Remediation	
 Proof of Concept	
+
