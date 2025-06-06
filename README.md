@@ -14,7 +14,8 @@ DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 ```
 **Installation**
 ```
-pip install -r requirements.txt
+git clone https://github.com/3tternp/pci-seg
+cd pci-seg
 ```
 **Dependencies:**
 ```
