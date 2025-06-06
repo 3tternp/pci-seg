@@ -1,81 +1,55 @@
 from docx import Document
-import json
-from jinja2 import Template
-import os
+from docx.shared import Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-def report_generator(scan_data, output_path, fmt='html'):
-    if fmt == 'json':
-        with open(output_path, 'w') as f:
-            json.dump(scan_data, f, indent=2)
-        return
+def format_heading(document, text, level=1):
+    heading = document.add_heading(text, level=level)
+    heading.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
-    elif fmt == 'html':
-        generate_html_report(scan_data, output_path)
-        return
+def format_paragraph(document, title, content):
+    run = document.add_paragraph().add_run(f"{title}: {content}")
+    run.font.size = Pt(11)
 
-    elif fmt == 'docx':
-        generate_docx_report(scan_data, output_path)
-        return
+def generate_vuln_section(document, vuln):
+    format_heading(document, vuln.get("issue_name", "Vulnerability"), level=2)
+    format_paragraph(document, "Targeted IP", vuln.get("targeted_ip", "N/A"))
+    format_paragraph(document, "Source IP", vuln.get("source_ip", "N/A"))
+    format_paragraph(document, "Method Used", vuln.get("method_used", "N/A"))
+    format_paragraph(document, "Port Used", vuln.get("port_used", "N/A"))
+    format_paragraph(document, "Vulnerability Details", vuln.get("vulnerability_details", "N/A"))
+    format_paragraph(document, "Attack Vector", vuln.get("attack_vector", "N/A"))
+    format_paragraph(document, "Attack Complexity", vuln.get("attack_complexity", "N/A"))
+    format_paragraph(document, "Privileges Required", vuln.get("privileges_required", "N/A"))
+    format_paragraph(document, "User Interaction", vuln.get("user_interaction", "N/A"))
+    format_paragraph(document, "Scope", vuln.get("scope", "N/A"))
+    format_paragraph(document, "Confidentiality Impact", vuln.get("confidentiality", "N/A"))
+    format_paragraph(document, "Integrity Impact", vuln.get("integrity", "N/A"))
+    format_paragraph(document, "Availability Impact", vuln.get("availability", "N/A"))
+    format_paragraph(document, "Severity Rating", vuln.get("severity_rating", "N/A"))
+    format_paragraph(document, "Business Impact", vuln.get("business_impact", "N/A"))
+    format_paragraph(document, "Remediation", vuln.get("remediation", "N/A"))
+    format_paragraph(document, "Proof of Concept", vuln.get("proof_of_concept", "N/A"))
+    document.add_paragraph("\n")
 
-    else:
-        raise ValueError("Unsupported report format. Use html, json, or docx.")
-
-
-def generate_html_report(scan_data, output_path):
-    template_str = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Vulnerability Report</title>
-        <style>
-            body { font-family: Arial; padding: 30px; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid #ccc; padding: 10px; }
-            th { background-color: #eee; }
-        </style>
-    </head>
-    <body>
-        <h2>Vulnerability Report</h2>
-        <table>
-            {% for key, value in scan_data.items() %}
-            <tr>
-                <th>{{ key.replace("_", " ").title() }}</th>
-                <td>{{ value }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
-    </html>
+def report_generator(data, output_path, fmt="docx"):
     """
-    template = Template(template_str)
-    rendered_html = template.render(scan_data=scan_data)
-    with open(output_path, 'w') as f:
-        f.write(rendered_html)
+    Generates a DOCX report.
+    
+    :param data: A dictionary or list of dictionaries containing vulnerability info.
+    :param output_path: Path to save the generated file.
+    :param fmt: Format (currently only 'docx' supported).
+    """
+    if fmt != "docx":
+        raise ValueError("Only 'docx' format is supported at the moment.")
 
+    document = Document()
+    document.add_heading("Security Assessment Report", level=0)
 
-def generate_docx_report(scan_data, output_path):
-    doc = Document()
-    doc.add_heading("Vulnerability Report", 0)
+    if isinstance(data, dict):
+        data = [data]  # Wrap in list if it's a single entry
 
-    # Add table
-    table = doc.add_table(rows=1, cols=2)
-    table.style = 'Table Grid'
+    for vuln in data:
+        generate_vuln_section(document, vuln)
 
-    hdr_cells = table.rows[0].cells
-    hdr_cells[0].text = 'Field'
-    hdr_cells[1].text = 'Details'
-
-    for field in [
-        'Issue Name', 'Targeted IP', 'Source IP', 'Method used', 'Port Used',
-        'Vulnerability details', 'Attack Vector', 'Attack Complexity',
-        'Privileges Required', 'User Interaction', 'Scope',
-        'Confidentiality', 'Integrity', 'Availability', 'Severity-Rating',
-        'Business impact', 'Remediation', 'Proof of Concept'
-    ]:
-        value = scan_data.get(field.lower().replace(" ", "_"), 'N/A')
-        row_cells = table.add_row().cells
-        row_cells[0].text = field
-        row_cells[1].text = str(value)
-
-    doc.save(output_path)
+    document.save(output_path)
+    print(f"[+] Report saved to {output_path}")
