@@ -10,10 +10,6 @@ Port Scanning with Evasion: Leverages Nmap with evasion flags such as fragmentin
 
 Profile-based Scanning: Currently supports pci-core and custom scanning profiles.
 
-HTML Report Generation: Nicely formatted HTML report using a Jinja2 template.
-
-JSON Report Option: Machine-readable output for integrations.
-
 DOCX Report Output: Automatically fills a vulnerability table in a .docx file.
 ```
 **Installation**
@@ -38,13 +34,11 @@ python3 main.py  --profile pci-core --report docx
 
 **Output**
 ![Screenshot From 2025-06-06 08-06-15](https://github.com/user-attachments/assets/32774795-d3e6-4960-8764-799db45fad63)
+
 and the generated report looks like 
+
 ![image](https://github.com/user-attachments/assets/31e51e9e-3e1e-4ed8-a0b8-4011692c4eaa)
 
-
-```
-report.docx: Word document in tabular vulnerability format.
-```
 **Profiles Supported**
 ```
 pci-core: Ports relevant for PCI-DSS audits.
